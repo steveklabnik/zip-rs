@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `ZipWriter` struct in crate `zip`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, ZipWriter">
+
+    <title>zip::ZipWriter - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../main.css">
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <section class="sidebar">
+        
+        <p class='location'><a href='index.html'>zip</a></p><div class='block mod'><h2>Modules</h2><a class='mod ' href='compression/index.html'>compression</a></div><div class='block struct'><h2>Structs</h2><a class='struct ' href='struct.ZipFile.html'>ZipFile</a><a class='struct ' href='struct.ZipReader.html'>ZipReader</a><a class='struct current' href='struct.ZipWriter.html'>ZipWriter</a></div>
+    </section>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press 'S' to search, '?' for more options..."
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>zip</a>::<wbr><a class='struct' href=''>ZipWriter</a><wbr></span><span class='out-of-band'><span id='render-detail'>
+            <a id="collapse-all" href="#">[-]
+            </a>&nbsp;<a id="expand-all" href="#">[+]</a>
+        </span><a id='src-4016' href='../src/zip/home/travis/build/mvdnes/zip-rs/src/writer.rs.html#43-48'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct ZipWriter&lt;W&gt; {
+    // some fields omitted
+}</pre><div class='docblock'><p>Generator for ZIP files.</p>
+<pre class='rust '>
+<span class='kw'>fn</span> <span class='ident'>doit</span>() <span class='op'>-&gt;</span> <span class='ident'>std</span>::<span class='ident'>io</span>::<span class='ident'>IoResult</span><span class='op'>&lt;</span>()<span class='op'>&gt;</span>
+{
+    <span class='comment'>// For this example we write to a buffer, but normally you should use a File</span>
+    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>buf</span> <span class='op'>=</span> [<span class='number'>0u8</span>, ..<span class='number'>65536</span>];
+    <span class='kw'>let</span> <span class='ident'>w</span> <span class='op'>=</span> <span class='ident'>std</span>::<span class='ident'>io</span>::<span class='ident'>BufWriter</span>::<span class='ident'>new</span>(<span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>buf</span>);
+    <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>zip</span> <span class='op'>=</span> <span class='ident'>zip</span>::<span class='ident'>ZipWriter</span>::<span class='ident'>new</span>(<span class='ident'>w</span>);
+
+    <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>zip</span>.<span class='ident'>start_file</span>(<span class='string'>&quot;hello_world.txt&quot;</span>, <span class='ident'>zip</span>::<span class='ident'>compression</span>::<span class='ident'>Stored</span>));
+    <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>zip</span>.<span class='ident'>write</span>(<span class='string'>b&quot;Hello, World!&quot;</span>));
+
+    <span class='comment'>// Optionally finish the zip. (this is also done on drop)</span>
+    <span class='macro'>try</span><span class='macro'>!</span>(<span class='ident'>zip</span>.<span class='ident'>finish</span>());
+
+    <span class='prelude-val'>Ok</span>(())
+}
+
+<span class='macro'>println</span><span class='macro'>!</span>(<span class='string'>&quot;Result: {}&quot;</span>, <span class='ident'>doit</span>());
+</pre>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;W: <a class='trait' href='http://doc.rust-lang.org/nightly/std/io/trait.Writer.html' title='std::io::Writer'>Writer</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/std/io/trait.Seek.html' title='std::io::Seek'>Seek</a>&gt; <a class='struct' href='../zip/struct.ZipWriter.html' title='zip::ZipWriter'>ZipWriter</a>&lt;W&gt;</code></h3><div class='impl-methods'><h4 id='method.new' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.new' class='fnname'>new</a>(inner: W) -&gt; <a class='struct' href='../zip/struct.ZipWriter.html' title='zip::ZipWriter'>ZipWriter</a>&lt;W&gt;</code></h4>
+<div class='docblock'><p>Initializes the ZipWriter.</p>
+
+<p>Before writing to this object, the start_file command should be called.</p>
+</div><h4 id='method.start_file' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.start_file' class='fnname'>start_file</a>(&amp;mut self, name: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, compression: <a class='enum' href='../zip/compression/enum.CompressionMethod.html' title='zip::compression::CompressionMethod'>CompressionMethod</a>) -&gt; <a class='type' href='http://doc.rust-lang.org/nightly/std/io/type.IoResult.html' title='std::io::IoResult'>IoResult</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>&gt;</code></h4>
+<div class='docblock'><p>Start a new file for with the requested compression method.</p>
+</div><h4 id='method.finish' class='method'><a class='stability Unmarked' title='No stability level'></a><code>fn <a href='#method.finish' class='fnname'>finish</a>(self) -&gt; <a class='type' href='http://doc.rust-lang.org/nightly/std/io/type.IoResult.html' title='std::io::IoResult'>IoResult</a>&lt;W&gt;</code></h4>
+<div class='docblock'><p>Finish the last file and write all other zip-structures</p>
+
+<p>This will return the writer, but one should normally not append any data to the end of the file.
+Note that the zipfile will also be finished on drop.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;W: <a class='trait' href='http://doc.rust-lang.org/nightly/std/io/trait.Writer.html' title='std::io::Writer'>Writer</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/std/io/trait.Seek.html' title='std::io::Seek'>Seek</a>&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/std/io/trait.Writer.html' title='std::io::Writer'>Writer</a> for <a class='struct' href='../zip/struct.ZipWriter.html' title='zip::ZipWriter'>ZipWriter</a>&lt;W&gt;</code></h3><div class='impl-methods'><h4 id='method.write' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#method.write' class='fnname'>write</a>(&amp;mut self, buf: <a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>&amp;[</a><a href='http://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a><a href='http://doc.rust-lang.org/nightly/std/primitive.slice.html'>]</a>) -&gt; <a class='type' href='http://doc.rust-lang.org/nightly/std/io/type.IoResult.html' title='std::io::IoResult'>IoResult</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>&gt;</code></h4>
+<h4 id='method.flush' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.flush' class='fnname'>flush</a>(&amp;mut self) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_fmt' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_fmt' class='fnname'>write_fmt</a>(&amp;mut self, fmt: &amp;<a class='struct' href='http://doc.rust-lang.org/nightly/core/fmt/struct.Arguments.html' title='core::fmt::Arguments'>Arguments</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_str' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_str' class='fnname'>write_str</a>(&amp;mut self, s: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_line' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_line' class='fnname'>write_line</a>(&amp;mut self, s: &amp;<a href='http://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_char' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_char' class='fnname'>write_char</a>(&amp;mut self, c: <a href='http://doc.rust-lang.org/nightly/core/primitive.char.html'>char</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_int' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_int' class='fnname'>write_int</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.int.html'>int</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_uint' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_uint' class='fnname'>write_uint</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_le_uint' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_le_uint' class='fnname'>write_le_uint</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_le_int' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_le_int' class='fnname'>write_le_int</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.int.html'>int</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_be_uint' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_be_uint' class='fnname'>write_be_uint</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.uint.html'>uint</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_be_int' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_be_int' class='fnname'>write_be_int</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.int.html'>int</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_be_u64' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_be_u64' class='fnname'>write_be_u64</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.u64.html'>u64</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_be_u32' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_be_u32' class='fnname'>write_be_u32</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_be_u16' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_be_u16' class='fnname'>write_be_u16</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.u16.html'>u16</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_be_i64' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_be_i64' class='fnname'>write_be_i64</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_be_i32' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_be_i32' class='fnname'>write_be_i32</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_be_i16' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_be_i16' class='fnname'>write_be_i16</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.i16.html'>i16</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_be_f64' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_be_f64' class='fnname'>write_be_f64</a>(&amp;mut self, f: <a href='http://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_be_f32' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_be_f32' class='fnname'>write_be_f32</a>(&amp;mut self, f: <a href='http://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_le_u64' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_le_u64' class='fnname'>write_le_u64</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.u64.html'>u64</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_le_u32' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_le_u32' class='fnname'>write_le_u32</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_le_u16' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_le_u16' class='fnname'>write_le_u16</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.u16.html'>u16</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_le_i64' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_le_i64' class='fnname'>write_le_i64</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.i64.html'>i64</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_le_i32' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_le_i32' class='fnname'>write_le_i32</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.i32.html'>i32</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_le_i16' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_le_i16' class='fnname'>write_le_i16</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.i16.html'>i16</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_le_f64' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_le_f64' class='fnname'>write_le_f64</a>(&amp;mut self, f: <a href='http://doc.rust-lang.org/nightly/std/primitive.f64.html'>f64</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_le_f32' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_le_f32' class='fnname'>write_le_f32</a>(&amp;mut self, f: <a href='http://doc.rust-lang.org/nightly/std/primitive.f32.html'>f32</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_u8' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_u8' class='fnname'>write_u8</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.u8.html'>u8</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.write_i8' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.write_i8' class='fnname'>write_i8</a>(&amp;mut self, n: <a href='http://doc.rust-lang.org/nightly/std/primitive.i8.html'>i8</a>) -&gt; <a class='enum' href='http://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a href='http://doc.rust-lang.org/nightly/std/primitive.unit.html'>()</a>, <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.IoError.html' title='std::io::IoError'>IoError</a>&gt;</code></h4>
+<h4 id='method.by_ref' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#tymethod.by_ref' class='fnname'>by_ref</a>(&amp;'a mut self) -&gt; <a class='struct' href='http://doc.rust-lang.org/nightly/std/io/struct.RefWriter.html' title='std::io::RefWriter'>RefWriter</a>&lt;'a, Self&gt;</code></h4>
+</div><h3 class='impl'><a class='stability Unmarked' title='No stability level'></a><code>impl&lt;W: <a class='trait' href='http://doc.rust-lang.org/nightly/std/io/trait.Writer.html' title='std::io::Writer'>Writer</a> + <a class='trait' href='http://doc.rust-lang.org/nightly/std/io/trait.Seek.html' title='std::io::Seek'>Seek</a>&gt; <a class='trait' href='http://doc.rust-lang.org/nightly/core/ops/trait.Drop.html' title='core::ops::Drop'>Drop</a> for <a class='struct' href='../zip/struct.ZipWriter.html' title='zip::ZipWriter'>ZipWriter</a>&lt;W&gt;</code></h3><div class='impl-methods'><h4 id='method.drop' class='method'><a class='stability Experimental' title='Experimental'></a><code>fn <a href='#method.drop' class='fnname'>drop</a>(&amp;mut self)</code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <div id="help" class="hidden">
+        <div class="shortcuts">
+            <h1>Keyboard shortcuts</h1>
+            <dl>
+                <dt>?</dt>
+                <dd>Show this help dialog</dd>
+                <dt>S</dt>
+                <dd>Focus the search field</dd>
+                <dt>&larrb;</dt>
+                <dd>Move up in search results</dd>
+                <dt>&rarrb;</dt>
+                <dd>Move down in search results</dd>
+                <dt>&#9166;</dt>
+                <dd>Go to active search result</dd>
+            </dl>
+        </div>
+        <div class="infos">
+            <h1>Search tricks</h1>
+            <p>
+                Prefix searches with a type followed by a colon (e.g.
+                <code>fn:</code>) to restrict the search to a given type.
+            </p>
+            <p>
+                Accepted types are: <code>fn</code>, <code>mod</code>,
+                <code>struct</code>, <code>enum</code>,
+                <code>trait</code>, <code>typedef</code> (or
+                <code>tdef</code>).
+            </p>
+        </div>
+    </div>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "zip";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script async src="../search-index.js"></script>
+</body>
+</html>
